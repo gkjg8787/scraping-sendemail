@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="http://localhost:8000/static/icon/favicon.ico">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="http://localhost:8000/static/css/style.css" type="text/css">
+    <title>アイテム価格一覧</title>
+    <script type="text/javascript" src="http://localhost:8000/static/js/common.js"></script>
+
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        function displayOnOffClick(name) {
+            var val = document.getElementById(name).style;
+            var btnstr = document.getElementById(name + 'btn');
+            if (val.display == '') {
+                cssval = getComputedStyle(document.getElementById(name));
+                setDisplayOnOff(cssval, val, btnstr);
+            } else {
+                setDisplayOnOff(val, val, btnstr);
+            }
+        }
+        function setDisplayOnOff(tar, val, btnstr) {
+            if (tar.display == 'none' || tar.display == '') {
+                val.display = 'inline';
+                btnstr.value = '－';
+            } else {
+                val.display = 'none';
+                btnstr.value = '＋';
+            }
+        }
+        window.onload = function () {
+            const itemid = '';
+            if (!itemid) {
+                return;
+            }
+            const itemidstr = 'item' + itemid;
+            const left = document.getElementById(itemidstr).getBoundingClientRect().left;
+            const top = document.getElementById(itemidstr).getBoundingClientRect().top;
+            window.scrollTo({
+                left: left,
+                top: top,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+    <h1>アイテム価格一覧</h1>
+    <h2>操作メニュー <input id="ctrlmenubtn" class="displaybtn ctrlmenubtn" type="button" value="＋"
+            onclick="displayOnOffClick('ctrlmenu');"></h2>
+    <div id="ctrlmenu">
+        <p><a href="http://localhost:8000/users/items/add/" class="like_button_link">アイテム追加</a></p>
+        <p><a href="http://localhost:8000/search/" class="like_button_link">アイテムを探して追加</a></p>
+        <p><button disabled>一括情報取得</button></p>
+        <p><button disabled>アイテムの価格計算</button></p>
+        <p><button disabled>アイテムの分析</button></p>
+        <p><a href="http://localhost:8000/users/urls/v/" class="like_button_link">URL一覧</a></p>
+        <p><a href="http://localhost:8000/users/stores/" class="like_button_link">店舗一覧</a></p>
+        <p><a href="http://localhost:8000/users/items/purchase/" class="like_button_link">買取URL一覧</a></p>
+        <p><a href="http://localhost:8000/admin/dashboard/" class="like_button_link">管理画面</a></p>
+    </div>
+    <h2>アイテム一覧</h2>
+    <h3>フィルタ <input id="itemfilterbtn" class="displaybtn itemfilterbtn" type="button" value="－"
+            onclick="displayOnOffClick('itemfilter');"></h3>
+    <div id="itemfilter">
+        <div class="top_group_select">
+            <p>
+            <form method="get" action="">
+                グループ : <select name="gid" onchange="submit(this.form)">
+                    <option value="-1">全て</option>
+
+                </select>
+
+
+                <input type="hidden" name="act" value="2">
+
+
+            </form>
+            <form action="http://localhost:8000/users/groups/add/" method="get"><button type="submit">グループ追加</button>
+            </form>
+
+            </p>
+        </div>
+        <p>
+        <form method="get" action="">
+            状態 : <select name="act" onchange="submit(this.form)">
+
+                <option value="1">全て</option>
+
+                <option value="2" selected>ACTIVEのみ</option>
+
+                <option value="3">INACTIVEのみ</option>
+
+            </select>
+
+
+
+        </form>
+        </p>
+        <p>
+        <form method="get" action="">
+            在庫ありのみ表示<input type="checkbox" onchange="submit(this.form)" name="zaiko" value="1" />
+
+
+            <input type="hidden" name="act" value="2">
+
+
+        </form>
+        </p>
+        <p>
+        <form method="get" action="">
+            並び替え : <select name="isort" onchange="submit(this.form)">
+
+                <option value="1">
+                    登録が古い順
+                </option>
+
+                <option value="2">
+                    登録が新しい順
+                </option>
+
+                <option value="3">
+                    値段が安い順
+                </option>
+
+                <option value="4">
+                    値段が高い順
+                </option>
+
+                <option value="5">
+                    アイテム名順
+                </option>
+
+                <option value="6">
+                    店名順
+                </option>
+
+                <option value="7">
+                    値下げ順
+                </option>
+
+                <option value="8">
+                    値上げ順
+                </option>
+
+                <option value="9">
+                    更新が古い順
+                </option>
+
+                <option value="10">
+                    更新が新しい順
+                </option>
+
+                <option value="11">
+                    最安値が安い順
+                </option>
+
+                <option value="12">
+                    最安値が高い順
+                </option>
+
+                <option value="13">
+                    最安値との差が小さい順
+                </option>
+
+                <option value="14">
+                    最安値との差が大きい順
+                </option>
+
+            </select>
+
+
+            <input type="hidden" name="act" value="2">
+
+
+        </form>
+        </p>
+        <p>
+        <form method="get" action="">
+            店舗指定 : <select name="store" onchange="submit(this.form)">
+                <option value="">全て</option>
+
+            </select>
+
+
+            <input type="hidden" name="act" value="2">
+
+
+        </form>
+        </p>
+        <p>
+        <form method="get" action="http://localhost:8000/users/ex/">
+            <button type="submit">店舗名で抽出</button>
+
+            <input type="hidden" name="act" value="2">
+
+        </form>
+        </p>
+        <p>
+        <form method="get" action="">
+            <div class="item_price_range_filter_box">
+                価格の範囲 : <input type="number" name="prmin" value="None"> ～ <input type="number" name="prmax"
+                    value="None">
+                <button type="submit">価格範囲で抽出</button>
+            </div>
+
+
+            <input type="hidden" name="act" value="2">
+
+
+        </form>
+        </p>
+        <p><a href="http://localhost:8000/users/fc/" class="plain-link">検索条件クリア</a></p>
+    </div>
+    <p>
+        <input type="button" value="一番下" onclick="gotoBottom()">
+    </p>
+    <p>
+        件数
+        0件
+    </p>
+    <table class='recent_table'>
+        <tr>
+            <th>item_id</th>
+            <th>商品名</th>
+            <th>url_id</th>
+            <th>URL</th>
+            <th>直近価格</th>
+            <th>変動率</th>
+            <th>セール名</th>
+            <th>店名</th>
+            <th>更新時間</th>
+            <th>今までの最安値</th>
+            <th>活性数</th>
+        </tr>
+
+    </table>
+    <p>表示するアイテムがありません</p>
+
+</body>
+
+</html>
