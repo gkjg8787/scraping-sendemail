@@ -1,0 +1,29 @@
+{% extends "shared/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}" type="text/css">
+<title>通知ログ一覧</title>
+{% endblock %}
+
+{% block body %}
+<h1>通知ログ一覧</h1>
+<p><a href="{{ url_for('read_admin_noticeloglist') }}" class="plain-link">ログ通知一覧へ戻る</a></p>
+<div class="option_box">
+    <h2>{{ options_title }}</h2>
+    <table class="noticelog_list_table">
+        <tr>
+            <th>設定名</th>
+            <th>値</th>
+            <th>説明</th>
+        </tr>
+        {%- for row in options %}
+        <tr>
+            <td>{{row["name"]}}</td>
+            <td>{{row["value"]}}</td>
+            <td>{{row["description"]}}</td>
+        </tr>
+        {%- endfor %}
+    </table>
+</div>
+<p><a href="{{ url_for('read_admin_noticeloglist') }}" class="plain-link">ログ通知一覧へ戻る</a></p>
+{% endblock %}

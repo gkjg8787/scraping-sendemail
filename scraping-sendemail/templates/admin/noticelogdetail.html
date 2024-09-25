@@ -1,0 +1,21 @@
+{% extends "shared/base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}" type="text/css">
+<title>通知ログ詳細</title>
+{% endblock %}
+
+{% block body %}
+<h1>通知ログ詳細</h1>
+<p><a href="{{ url_for('read_admin_noticeloglist') }}" class="plain-link">通知ログ一覧へ戻る</a></p>
+<div class="noticelog_detail_box">
+    <p>Log_id : {{ noticelog.log_id }}</p>
+    <p>ログ種別 : {{ noticelog.notice_type.name }}({{noticelog.notice_type.value}})</p>
+    <p>登録日 : {{ noticelog.created_at }}</p>
+    <p>エラー有無 : {{ noticelog.err_num }}</p>
+    <p>内容({{ rows }}行)&ensp;
+        <textarea class="noticelogtext" name="noticelogtext">{{ noticelog.text }}</textarea>
+    </p>
+</div>
+<p><a href="{{ url_for('read_admin_noticeloglist') }}" class="plain-link">通知ログ一覧へ戻る</a></p>
+{% endblock %}

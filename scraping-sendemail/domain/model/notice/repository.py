@@ -10,15 +10,17 @@ class INoticeLogRepository(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    async def find_by_date(self, target_date: datetime) -> list[NoticeLog]:
+    async def find_by_log_id(self, log_id: int) -> NoticeLog | None:
         pass
 
     @abstractmethod
-    async def find_by_noticetype(self, notice_type: NoticeType) -> list[NoticeLog]:
-        pass
-
-    @abstractmethod
-    async def find_by_err_num(self, err_num: int) -> list[NoticeLog]:
+    async def find_by_filter(
+        self,
+        notice_type: NoticeType | None = None,
+        err_num: int | None = None,
+        target_date: datetime | None = None,
+        keyword: str | None = None,
+    ) -> list[NoticeLog]:
         pass
 
     @abstractmethod

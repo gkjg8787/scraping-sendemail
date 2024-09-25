@@ -34,40 +34,39 @@ class NoticeLogRepository(INoticeLogRepository):
             await db.refresh(db_log)
             return
 
+    async def find_by_log_id(self, log_id: int) -> NoticeLog | None:
+        db = self.session
+        db_log = await db.get(DBNoticeLog, log_id)
+        if not db_log:
+            return None
+        result = DBToDomain(noticelogfactory=NoticeLogFactory()).toNoticeLog(db_log)
+        return result
+
     @classmethod
     def _to_noticelog(cls, select_results):
         dbtodomain = DBToDomain(noticelogfactory=NoticeLogFactory())
         results = [dbtodomain.toNoticeLog(r) for r in select_results]
         return results
 
-    async def find_by_date(self, target_date: datetime) -> list[NoticeLog]:
+    async def find_by_filter(
+        self,
+        notice_type: NoticeType | None = None,
+        err_num: int | None = None,
+        target_date: datetime | None = None,
+        keyword: str | None = None,
+    ) -> list[NoticeLog]:
         db = self.session
-        target = target_date.replace(tzinfo=None)
-        stmt = (
-            select(DBNoticeLog)
-            .where(func.date(DBNoticeLog.created_at) == func.date(target))
-            .order_by(DBNoticeLog.log_id.asc())
-        )
-        ret = await db.scalars(stmt)
-        return self._to_noticelog(ret.all())
-
-    async def find_by_noticetype(self, notice_type: NoticeType) -> list[NoticeLog]:
-        db = self.session
-        stmt = (
-            select(DBNoticeLog)
-            .where(DBNoticeLog.notice_type == notice_type)
-            .order_by(DBNoticeLog.log_id.asc())
-        )
-        ret = await db.scalars(stmt)
-        return self._to_noticelog(ret.all())
-
-    async def find_by_err_num(self, err_num: int) -> list[NoticeLog]:
-        db = self.session
-        stmt = (
-            select(DBNoticeLog)
-            .where(DBNoticeLog.err_num == err_num)
-            .order_by(DBNoticeLog.log_id.asc())
-        )
+        stmt = select(DBNoticeLog)
+        if notice_type is not None:
+            stmt = stmt.where(DBNoticeLog.notice_type == notice_type.value)
+        if err_num is not None:
+            stmt = stmt.where(DBNoticeLog.err_num == err_num)
+        if target_date:
+            target = target_date.replace(tzinfo=None)
+            stmt = stmt.where(func.date(DBNoticeLog.created_at) == func.date(target))
+        if keyword:
+            stmt = stmt.where(DBNoticeLog.text.contains(keyword))
+        stmt = stmt.order_by(DBNoticeLog.log_id.asc())
         ret = await db.scalars(stmt)
         return self._to_noticelog(ret.all())
 
