@@ -50,8 +50,8 @@ KAKAKU_NOTICE = {
         "change_to_in_stock": True,
         "change_to_out_of_stock": False,
         "lowest_price": True,
+        "lowest_price_without_no_change": False,
         "price_decline": True,
         "price_rise": False,
-        "lowest_price_without_no_change": False,
     },
 }

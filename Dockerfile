@@ -10,7 +10,7 @@ RUN ln -sf /usr/share/zoneinfo/Japan /etc/localtime && \
 RUN apt-get install -y python3
 
 RUN apt-get install -y \
-    python3-pip sqlite3 python3-venv
+    python3-pip sqlite3 python3-venv cron
 
 WORKDIR /app
 
@@ -29,5 +29,6 @@ EXPOSE 8020
 WORKDIR /app/scraping-sendemail
 
 RUN python3 db_util.py create
+RUN echo "30 16 * * * bash /app/cron.sh" | crontab -
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8020"]
+ENTRYPOINT ["/app/entrypoint.sh"]
