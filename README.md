@@ -4,7 +4,12 @@
 
 - [kakakuscraping-fastapi](https://github.com/gkjg8787/kakakuscraping-fastapi) のアイテム一覧をチェックし、前回からの差分をメールで通知する WEB アプリケーション。
 - 1 日 1 回チェックでの差分通知を想定。
-- アイテム一覧の差分は kakakuscraping-fastapi の DB とは別で持っているため実際の想定差分とは異なる結果になる可能性あり。
+- アイテム一覧のデータは kakakuscraping-fastapi の DB とは別で持っているため実際の想定差分とは異なる結果になる可能性あり。
+
+## 使い方
+
+1.設定の変更が必要なら変更する。また環境変数をなにかしらで設定する。
+1.docker として実行で起動（説明は省略）。 1.動作ログと通知設定は?http://127.0.0.1:8020`で確認できる。
 
 ## 設定
 
@@ -22,18 +27,18 @@
 
 - kakakuscraping-fastapi 用の通知設定
 
-| 設定名                         | 説明                                                                                   |
-| ------------------------------ | -------------------------------------------------------------------------------------- |
+| 設定名                         | 説明                                                                                     |
+| ------------------------------ | ---------------------------------------------------------------------------------------- |
 | kakaku_url                     | kakakuscraping-fastapi のアイテム一覧への URL。`http://～`で記述。リダイレクトには未対応 |
-| kakaku_notice_option           | 通知設定。dict 型                                                                      |
-| new_item                       | 追加された（一覧から見えるようになった）アイテムの通知 ON/OFF                          |
-| remove_item                    | 削除（一覧から見えなくなった）アイテムの通知 ON/OFF                                    |
-| change_to_in_stock             | 在庫なし(-1)から在庫ありになったアイテムの通知 ON/OFF                                  |
-| change_to_out_of_stock         | 在庫ありから在庫なし(-1)になったアイテムの通知 ON/OFF                                  |
-| lowest_price                   | 最安値を更新した通知 ON/OFF                                                            |
-| lowest_price_without_no_change | 値段の変更なしで最安値である通知 ON/OFF                                                |
-| price_decline                  | 値段が下がった通知 ON/OFF                                                              |
-| price_rise                     | 値段が上がった通知の ON/OFF                                                            |
+| kakaku_notice_option           | 通知設定。dict 型                                                                        |
+| new_item                       | 追加された（一覧から見えるようになった）アイテムの通知 ON/OFF                            |
+| remove_item                    | 削除（一覧から見えなくなった）アイテムの通知 ON/OFF                                      |
+| change_to_in_stock             | 在庫なし(-1)から在庫ありになったアイテムの通知 ON/OFF                                    |
+| change_to_out_of_stock         | 在庫ありから在庫なし(-1)になったアイテムの通知 ON/OFF                                    |
+| lowest_price                   | 最安値を更新した通知 ON/OFF                                                              |
+| lowest_price_without_no_change | 値段の変更なしで最安値である通知 ON/OFF                                                  |
+| price_decline                  | 値段が下がった通知 ON/OFF                                                                |
+| price_rise                     | 値段が上がった通知の ON/OFF                                                              |
 
 ### 環境変数
 
@@ -45,3 +50,9 @@
 | SOURCE_EMAIL_ADDRESS  | 送信元のメールアドレス                   |
 | SOURCE_EMAIL_PASSWORD | 送信元のメールアドレスのアプリパスワード |
 | DEST_EMAIL_ADDRESS    | 送信（通知）先のメールアドレス           |
+
+### 通知タイマー設定(cron)
+
+- cron による定期実行で差分を確認し、通知を行っている。
+- Dockerfile の以下の部分を書き換えることで実行時間の設定を変更可能。
+  `RUN echo "30 16 * * * bash /app/cron.sh" | crontab -`
