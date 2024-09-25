@@ -24,7 +24,7 @@
 
 | 設定名                         | 説明                                                                                   |
 | ------------------------------ | -------------------------------------------------------------------------------------- |
-| kakaku_url                     | kakakuscraping-fastapi のアイテム一覧への URL。http://～で記述。リダイレクトには未対応 |
+| kakaku_url                     | kakakuscraping-fastapi のアイテム一覧への URL。`http://～`で記述。リダイレクトには未対応 |
 | kakaku_notice_option           | 通知設定。dict 型                                                                      |
 | new_item                       | 追加された（一覧から見えるようになった）アイテムの通知 ON/OFF                          |
 | remove_item                    | 削除（一覧から見えなくなった）アイテムの通知 ON/OFF                                    |
