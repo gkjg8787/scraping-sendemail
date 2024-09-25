@@ -2,9 +2,13 @@
 
 ## 概要
 
-- kakakuscraping-fastapi のアイテム一覧をチェックし、前日の差分をメールで通知する WEB アプリケーション
+- [kakakuscraping-fastapi](https://github.com/gkjg8787/kakakuscraping-fastapi) のアイテム一覧をチェックし、前回からの差分をメールで通知する WEB アプリケーション。
+- 1 日 1 回チェックでの差分通知を想定。
+- アイテム一覧の差分は kakakuscraping-fastapi の DB とは別で持っているため実際の想定差分とは異なる結果になる可能性あり。
 
 ## 設定
+
+- settings ファイルでは対象の URL、通知設定の ON/OFF、環境変数ではメールアドレスの送信元/先の設定を行う。
 
 ### settings ファイル
 
@@ -14,7 +18,7 @@
 | LOGGER_CONFIG | Logger の設定                       |
 | KAKAKU_NOTICE | kakakuscraping-fastapi 用の通知設定 |
 
-#### KAKAKU_NOTICE
+##### KAKAKU_NOTICE
 
 - kakakuscraping-fastapi 用の通知設定
 
@@ -34,7 +38,7 @@
 ### 環境変数
 
 - 通知の送信元、先のメールアドレスとパスワードは環境変数で設定する
-- Gmail のみ確認。パスワードはアプリパスワードが必要。
+- Gmail のみ動作確認。パスワードはアプリパスワードが必要。
 
 | 環境変数名            | 説明                                     |
 | --------------------- | ---------------------------------------- |
