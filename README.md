@@ -15,7 +15,7 @@
 
 ## 設定
 
-- [settings ファイル](scraping-sendemail/settings.py)では対象の URL、通知設定の ON/OFF、[環境変数](#環境変数)ではメールアドレスの送信元/先の設定を行う。動作する時間は[cron](#通知タイマー設定(cron))で設定を行う。
+- [settings ファイル](scraping-sendemail/settings.py)では対象の URL、通知設定の ON/OFF、[環境変数](#環境変数)ではメールアドレスの送信元/先の設定を行う。動作する時間は[cron](#通知タイマー設定)で設定を行う。
 
 ### settings ファイル
 
@@ -63,7 +63,7 @@
 | SOURCE_EMAIL_PASSWORD | 送信元のメールアドレスのアプリパスワード |
 | DEST_EMAIL_ADDRESS    | 送信（通知）先のメールアドレス           |
 
-### 通知タイマー設定(cron)
+### 通知タイマー設定
 
 - cron による定期実行で差分を確認し、通知を行っている。
 - Dockerfile の以下の部分を書き換えることで実行時間の設定を変更可能。<br>
