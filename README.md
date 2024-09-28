@@ -15,7 +15,7 @@
 
 ## 設定
 
-- settings ファイルでは対象の URL、通知設定の ON/OFF、環境変数ではメールアドレスの送信元/先の設定を行う。
+- [settings ファイル](scraping-sendemail/settings.py)では対象の URL、通知設定の ON/OFF、[環境変数](#環境変数)ではメールアドレスの送信元/先の設定を行う。動作する時間は[cron](#通知タイマー設定(cron))で設定を行う。
 
 ### settings ファイル
 
