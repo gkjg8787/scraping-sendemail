@@ -24,6 +24,7 @@
 | DATABASES     | DB の設定。aiosqlite のみ対応       |
 | LOGGER_CONFIG | Logger の設定                       |
 | KAKAKU_NOTICE | kakakuscraping-fastapi 用の通知設定 |
+| NOTICELOG     | 通知ログの設定                      |
 
 ##### KAKAKU_NOTICE
 
@@ -41,6 +42,15 @@
 | lowest_price_without_no_change | 値段の変更なしで最安値である通知 ON/OFF                                                  |
 | price_decline                  | 値段が下がった通知 ON/OFF                                                                |
 | price_rise                     | 値段が上がった通知の ON/OFF                                                              |
+
+#### NOTICELOG
+
+- 通知ログの設定
+
+| 設定名 | 説明 |
+| ---- | ---- |
+| storagecount | 保持するログの最大数。整数で設定。30を設定しているなら30個よりログが多い場合、古いログが削除される。0以下で無効。 |
+| storagedays | 保持するログの日数。整数（日数）で設定。30を設定しているなら30日よりも前のログが削除される。0以下で無効。 |
 
 ### 環境変数
 
