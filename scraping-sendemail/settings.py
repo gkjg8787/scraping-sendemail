@@ -55,3 +55,7 @@ KAKAKU_NOTICE = {
         "price_rise": False,
     },
 }
+NOTICELOG = {
+    "storagecount": 100,
+    "storagedays": 30,
+}

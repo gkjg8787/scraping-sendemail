@@ -68,3 +68,6 @@ class NoticeLogDictRepository(INoticeLogRepository):
             elif not including and d.created_at.date() >= target.date():
                 new_data[d.log_id] = d
         self.data = new_data
+
+    async def delete_by_log_id(self, log_id: int):
+        self.data.pop(log_id)

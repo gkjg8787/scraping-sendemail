@@ -1,25 +1,20 @@
 from datetime import datetime
-from zoneinfo import ZoneInfo
+
 
 from domain.model import (
     IKakakuItemFactory,
     IKakakuItemRepository,
     KakakuItem,
-    INoticeLogFactory,
-    INoticeLogRepository,
-    NoticeLog,
-    NoticeType,
 )
 from application.sendemail import OneMailCreator, EmailSender, Async_MessageCreator
 from application.download import DownloadCommand, DownloadType, async_download_text
-
+from application.localtime import get_localtimezone
+from application.noticelog import NoticeLogger, NoticeLogOrganizer
 from .parse import KakakuParser
 from .noticeoption import KakakuNoticeOption
 from .previousdaysdata import IPreviousDaysKakakuData
 from .comparision import KakakuDataComparision
 from .command import KakakuNoticeCommand
-
-JST = ZoneInfo("Asia/Tokyo")
 
 
 class KakakuCheckAndMessageCreator(Async_MessageCreator):
@@ -97,12 +92,22 @@ class KakakuNotice:
                 )
             ]
         )
+        noticelogger = NoticeLogger(
+            factory=command.noticelogfactory,
+            repository=command.noticelogrepository,
+            noticelogidentity=command.noticelogidentity,
+        )
+        noticelogorganizer = NoticeLogOrganizer(
+            repository=command.noticelogrepository,
+            noticelogconfig=command.noticelogconfig,
+        )
         try:
             text = await mailcreator.execute()
         except Exception as e:
-            await command.noticelogger.check(err_num=1, text=str(e))
+            await noticelogger.check(err_num=1, text=str(e))
+            await noticelogorganizer.execute()
             return
-        await command.noticelogger.check()
+        await noticelogger.check()
         if text:
             command.logger.info("send email")
             try:
@@ -114,11 +119,13 @@ class KakakuNotice:
                     message=text,
                 )
             except Exception as e:
-                await command.noticelogger.update_notice(text=str(e), err_num=1)
+                await noticelogger.update_notice(text=str(e), err_num=1)
+                await noticelogorganizer.execute()
                 return
-            await command.noticelogger.update_notice(text=text)
+            await noticelogger.update_notice(text=text)
+            await noticelogorganizer.execute()
 
     def get_subject(self) -> str:
-        now = datetime.now(JST)
+        now = datetime.now(get_localtimezone())
         result = f"{str(now.date())}の更新通知"
         return result

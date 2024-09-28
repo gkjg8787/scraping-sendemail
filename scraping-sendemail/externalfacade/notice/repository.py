@@ -91,3 +91,9 @@ class NoticeLogRepository(INoticeLogRepository):
             )
         await db.execute(stmt)
         await db.commit()
+
+    async def delete_by_log_id(self, log_id: int):
+        db = self.session
+        stmt = delete(DBNoticeLog).where(DBNoticeLog.log_id == log_id)
+        await db.execute(stmt)
+        await db.commit()

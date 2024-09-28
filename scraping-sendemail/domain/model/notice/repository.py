@@ -32,3 +32,7 @@ class INoticeLogRepository(metaclass=ABCMeta):
         self, target_date: datetime, including: bool = False
     ) -> None:
         pass
+
+    @abstractmethod
+    async def delete_by_log_id(self, log_id: int):
+        pass

@@ -3,13 +3,13 @@ import os
 import logging.config
 
 
-from settings import KAKAKU_NOTICE, LOGGER_CONFIG
+from settings import KAKAKU_NOTICE, LOGGER_CONFIG, NOTICELOG
 from application.kakaku_notice import (
     KakakuNotice,
     KakakuNoticeOption,
     KakakuNoticeCommand,
-    NoticeLogger,
 )
+from application.noticelog import NoticeLogConfig
 from externalfacade.items import KakakuItemFactory, KakakuItemRepository
 from externalfacade.kakaku_notice import PreviousDaysKakakuData
 from externalfacade.notice import (
@@ -46,11 +46,10 @@ async def main():
             kakakuitemfactory=KakakuItemFactory(),
             kakakuitemrepository=KakakuItemRepository(session=db),
             predaysdata=PreviousDaysKakakuData(session=db),
-            noticelogger=NoticeLogger(
-                factory=NoticeLogFactory(),
-                repository=NoticeLogRepository(session=db),
-                noticeididentity=NoticeLogIdentity(session=db),
-            ),
+            noticelogfactory=NoticeLogFactory(),
+            noticelogrepository=NoticeLogRepository(session=db),
+            noticelogidentity=NoticeLogIdentity(session=db),
+            noticelogconfig=NoticeLogConfig(**NOTICELOG),
             logger=logger,
         )
         notice = KakakuNotice(kakakunoticecommand=command)

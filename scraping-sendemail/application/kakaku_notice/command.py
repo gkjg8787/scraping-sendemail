@@ -5,10 +5,13 @@ from pydantic import BaseModel, ConfigDict
 from domain.model import (
     IKakakuItemFactory,
     IKakakuItemRepository,
+    INoticeLogFactory,
+    INoticeLogRepository,
 )
+from domain.service import INoticeLogIdentity
 from .noticeoption import KakakuNoticeOption
 from .previousdaysdata import IPreviousDaysKakakuData
-from .writenoticelog import NoticeLogger
+from application.noticelog import NoticeLogConfig
 
 
 class KakakuNoticeCommand(BaseModel):
@@ -22,5 +25,8 @@ class KakakuNoticeCommand(BaseModel):
     kakakuitemfactory: IKakakuItemFactory
     kakakuitemrepository: IKakakuItemRepository
     predaysdata: IPreviousDaysKakakuData
-    noticelogger: NoticeLogger
+    noticelogfactory: INoticeLogFactory
+    noticelogrepository: INoticeLogRepository
+    noticelogidentity: INoticeLogIdentity
+    noticelogconfig: NoticeLogConfig
     logger: logging.Logger
