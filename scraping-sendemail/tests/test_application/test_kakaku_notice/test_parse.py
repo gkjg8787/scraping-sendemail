@@ -7,6 +7,7 @@ from externalfacade.items import KakakuItemFactory
 
 no_data_fpath = os.path.dirname(__file__) + "/data/no_data.html"
 three_data_fpath = os.path.dirname(__file__) + "/data/three_data.html"
+sinagire_shokai_fpath = os.path.dirname(__file__) + "/data/sinagire_syokai_data.html"
 
 
 def test_KakakuParser_no_data():
@@ -62,8 +63,35 @@ def test_KakakuParser_three_data():
             "active_url": 2,
         },
     }
+    parser = None
     with open(three_data_fpath, encoding="utf-8") as fp:
         parser = KakakuParser(fp, kakakuitemfactory=KakakuItemFactory())
-        assert len(parser.results) == 3
-        for r in parser.results:
-            assert r.model_dump() == correct_data[str(r.item_id)]
+    assert parser is not None
+    assert len(parser.results) == 3
+    for r in parser.results:
+        assert r.model_dump() == correct_data[str(r.item_id)]
+
+
+def test_KakakuParser_sinagire_syokai():
+    correct_data = {
+        "1": {
+            "item_id": 1,
+            "name": "ゼノブレイドクロス セット(WiiU本体同梱)(状態：HDMIケーブル欠品)",
+            "url_id": -1,
+            "url": "",
+            "price": -1,
+            "trendrate": 0.0,
+            "salename": "",
+            "storename": "",
+            "updated_at": convert_datetime("2024-09-29 23:24:24"),
+            "record_low": -1,
+            "active_url": 1,
+        }
+    }
+    parser = None
+    with open(sinagire_shokai_fpath, encoding="utf-8") as fp:
+        parser = KakakuParser(fp, kakakuitemfactory=KakakuItemFactory())
+    assert parser is not None
+    assert len(parser.results) == 1
+    for r in parser.results:
+        assert r.model_dump() == correct_data[str(r.item_id)]

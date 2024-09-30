@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+import freezegun
 
 from domain.model import NoticeLog, NoticeType
 from application.noticelog import NoticeLogOrganizer, NoticeLogConfig
@@ -52,7 +53,7 @@ async def test_NoticeLogOrganizer_count_max(mocker):
 
 
 @pytest.mark.asyncio
-async def test_NoticeLogOrganizer_delete_older_date(mocker):
+async def test_NoticeLogOrganizer_delete_older_date():
     data: dict[int, NoticeLog] = {
         1: create_noticelog(log_id=1, created_at=datetime(2024, 9, 20)),
         2: create_noticelog(log_id=2, created_at=datetime(2024, 9, 21)),
@@ -69,8 +70,8 @@ async def test_NoticeLogOrganizer_delete_older_date(mocker):
     organizer = NoticeLogOrganizer(
         repository=repo, noticelogconfig=NoticeLogConfig(**config)
     )
-
-    await organizer.execute()
+    with freezegun.freeze_time("2024-09-28"):
+        await organizer.execute()
     rets = await repo.find_all()
     assert len(rets) == 5
     ids = [d.log_id for d in rets]

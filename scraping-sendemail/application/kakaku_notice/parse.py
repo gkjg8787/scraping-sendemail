@@ -37,14 +37,30 @@ class KakakuParser:
                 continue
             parse_data = {k: v.text.strip() for k, v in zip(keys, cols)}
             for key in ["item_id", "url_id", "active_url"]:
+                if parse_data[key] is None or not str(parse_data[key]).isdigit():
+                    match key:
+                        case "active_url":
+                            parse_data[key] = 0
+                        case _:
+                            parse_data[key] = -1
+                    continue
                 parse_data[key] = int(parse_data[key])
+
             parse_data["updated_at"] = self.convert_updated_at(parse_data["updated_at"])
             parse_data["price"] = self.convert_price(parse_data["price"])
             parse_data["record_low"] = self.convert_price(parse_data["record_low"])
             parse_data["trendrate"] = self.convert_trendrate(parse_data["trendrate"])
+            for key in ["name", "url", "storename", "salename"]:
+                parse_data[key] = self.convert_none_str(parse_data[key])
             item = kakakuitemfactory.create(**parse_data)
             results.append(item)
         return results
+
+    @classmethod
+    def convert_none_str(cls, value: str):
+        if value.lower() == "None".lower():
+            return ""
+        return value
 
     @classmethod
     def convert_price(cls, value: str) -> int:
