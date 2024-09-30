@@ -104,7 +104,7 @@ class KakakuNotice:
         try:
             text = await mailcreator.execute()
         except Exception as e:
-            await noticelogger.check(err_num=1, text=str(e))
+            await noticelogger.check(err_num=1, text=f"{type(e)}:{str(e)}")
             await noticelogorganizer.execute()
             return
         await noticelogger.check()
@@ -119,7 +119,7 @@ class KakakuNotice:
                     message=text,
                 )
             except Exception as e:
-                await noticelogger.update_notice(text=str(e), err_num=1)
+                await noticelogger.update_notice(err_num=1, text=f"{type(e)}:{str(e)}")
                 await noticelogorganizer.execute()
                 return
             await noticelogger.update_notice(text=text)
