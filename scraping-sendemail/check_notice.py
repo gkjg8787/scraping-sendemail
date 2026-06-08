@@ -11,7 +11,7 @@ from application.kakaku_notice import (
 )
 from application.noticelog import NoticeLogConfig
 from externalfacade.items import KakakuItemFactory, KakakuItemRepository
-from externalfacade.kakaku_notice import PreviousDaysKakakuData
+from externalfacade.kakaku_notice import GetAllKakakuData
 from externalfacade.notice import (
     NoticeLogFactory,
     NoticeLogRepository,
@@ -45,7 +45,7 @@ async def main():
             notice_option=KakakuNoticeOption(**KAKAKU_NOTICE["kakaku_notice_option"]),
             kakakuitemfactory=KakakuItemFactory(),
             kakakuitemrepository=KakakuItemRepository(session=db),
-            predaysdata=PreviousDaysKakakuData(session=db),
+            predaysdata=GetAllKakakuData(session=db),
             noticelogfactory=NoticeLogFactory(),
             noticelogrepository=NoticeLogRepository(session=db),
             noticelogidentity=NoticeLogIdentity(session=db),

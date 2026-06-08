@@ -1,3 +1,3 @@
-from .previousdaysdata import PreviousDaysKakakuData
+from .previousdaysdata import GetAllKakakuData
 
-__all__ = ["PreviousDaysKakakuData"]
+__all__ = ["GetAllKakakuData"]
